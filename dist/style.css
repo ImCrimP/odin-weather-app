@@ -1,0 +1,149 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(0, 127, 142);
+}
+:root {
+  --search-background: rgb(11, 56, 72);
+}
+
+#container {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  min-height: 100vh;
+}
+
+#search-container {
+  grid-column: 2/5;
+  grid-row-start: 1;
+  display: flex;
+  justify-content: space-between;
+  height: 41px;
+  width: 300px;
+  justify-self: center;
+  border: 1px solid;
+  border-radius: 20px;
+}
+#search-container:focus-within {
+  border: 2px solid white;
+}
+#city-search {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+  flex: 1;
+  height: 38px;
+  padding-left: 15px;
+  font-weight: 600;
+  color: white;
+}
+#city-search:focus {
+  outline: none;
+}
+#search-icon {
+  flex: 1;
+  height: 40px;
+  width: 23px;
+  padding-right: 5px;
+  cursor: pointer;
+  stroke: white;
+}
+
+.search {
+  height: 41px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--search-background);
+  fill: white;
+}
+
+#f-c-change {
+  grid-column: 5/6;
+  font-size: 20px;
+  border-radius: 20px;
+  width: 100px;
+  height: 41px;
+}
+
+#city-info {
+  display: flex;
+  flex-direction: column;
+  grid-column: 2 / 5;
+  grid-row: 2/3;
+  align-content: center;
+  justify-self: center;
+  text-align: center;
+  gap: 10px;
+}
+
+#city-name {
+  font-size: 58px;
+  color: white;
+}
+
+#city-time {
+  font-size: 32px;
+  color: white;
+  filter: opacity(80%) brightness(70%);
+}
+
+#weather-info {
+  grid-column: 2/5;
+  grid-row-start: 3; /* Start at row 3 */
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-self: center;
+  text-align: center;
+  gap: 10px;
+  color: white;
+}
+
+#condition-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-size: 28px;
+}
+
+#temp {
+  font-size: 72px;
+}
+
+#forecast-weekly {
+  font-size: 52px;
+  grid-column: 2/5;
+  grid-row-start: 4;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center;
+  gap: 15px;
+  color: white;
+}
+
+#forecast-display {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  gap: 20px;
+}
+
+.day {
+  font-size: 32px;
+  grid-column: 2/5;
+  display: flex;
+  justify-content: space-between;
+  align-content: flex-start;
+  text-align: center;
+  gap: 10px;
+  color: white;
+  border-bottom: 1px solid white;
+}
