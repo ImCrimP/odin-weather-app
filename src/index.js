@@ -12,6 +12,8 @@ let ferDisplay = document.querySelector("#fer");
 let celDisplay = document.querySelector("#cel");
 
 const degreeDispley = document.querySelector("#temp");
+const dayLowDisplay = document.querySelector("#low");
+const dayHighDisplay = document.querySelector("#high");
 
 tempConvertBtn.addEventListener("click", () => {
   console.log("temp button clicked");
@@ -28,10 +30,18 @@ tempConvertBtn.addEventListener("click", () => {
   if (cityData != undefined && cityData != null) {
     const tempF = `${cityData.current.temp_f}°F`;
     const tempC = `${cityData.current.temp_c}°C`;
+    const dayLowF = `Low: ${cityData.forecast.forecastday[0].day.mintemp_f}°F`;
+    const dayLowC = `Low: ${cityData.forecast.forecastday[0].day.mintemp_c}°C`;
+    const dayHighF = `High: ${cityData.forecast.forecastday[0].day.maxtemp_f}°F`;
+    const dayHighC = `High: ${cityData.forecast.forecastday[0].day.maxtemp_c}°C`;
     if (tempFer) {
       degreeDispley.textContent = tempF;
+      dayLowDisplay.textContent = dayLowF;
+      dayHighDisplay.textContent = dayHighF;
     } else {
       degreeDispley.textContent = tempC;
+      dayLowDisplay.textContent = dayLowC;
+      dayHighDisplay.textContent = dayHighC;
     }
   }
 });
@@ -68,10 +78,27 @@ async function getCity(city) {
 
   const tempF = `${cityData.current.temp_f}°F`;
   const tempC = `${cityData.current.temp_c}°C`;
+
+  const conditionDisplay = document.querySelector("#condition");
+
+  conditionDisplay.textContent = cityData.current.condition.text;
+  const currentConditionImg = document.querySelector("#currentImg");
+  currentConditionImg.src = cityData.current.condition.icon;
+  currentConditionImg.alt = `${cityData.current.condition.text} image`;
+
+  const dayLowF = `Low: ${cityData.forecast.forecastday[0].day.mintemp_f}°F`;
+  const dayLowC = `Low: ${cityData.forecast.forecastday[0].day.mintemp_c}°C`;
+  const dayHighF = `High: ${cityData.forecast.forecastday[0].day.maxtemp_f}°F`;
+  const dayHighC = `High: ${cityData.forecast.forecastday[0].day.maxtemp_c}°C`;
+
   if (tempFer) {
     degreeDispley.textContent = tempF;
+    dayLowDisplay.textContent = dayLowF;
+    dayHighDisplay.textContent = dayHighF;
   } else {
     degreeDispley.textContent = tempC;
+    dayLowDisplay.textContent = dayLowC;
+    dayHighDisplay.textContent = dayHighC;
   }
 
   console.log(cityData);
