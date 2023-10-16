@@ -1,5 +1,5 @@
 import APIKey from "./apikey";
-import { format, isSameHour, getHours } from "date-fns";
+import { format, isSameHour, getHours, parseISO } from "date-fns";
 
 let key = APIKey();
 
@@ -35,46 +35,57 @@ tempConvertBtn.addEventListener("click", () => {
 const searchBtn = document.querySelector("#search-btn");
 const citySearch = document.querySelector("#city-search");
 let city = "";
+let tempCity = "chicago";
+getCity(tempCity);
 
 searchBtn.addEventListener("click", () => {
   city = citySearch.value;
   getCity(city);
 });
 
+citySearch.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.keyCode === 13) {
+    event.preventDefault();
+    city = citySearch.value;
+    getCity(city);
+  }
+});
+
 let temp;
 
 async function getCity(city) {
-  //try {
-  const repsonse = await fetch(
-    `https://api.weatherapi.com/v1/forecast.json?key=${key}&q=${city}&days=7`,
-    { mode: "cors" }
-  );
+  try {
+    const repsonse = await fetch(
+      `https://api.weatherapi.com/v1/forecast.json?key=${key}&q=${city}&days=7`,
+      { mode: "cors" }
+    );
 
-  cityData = await repsonse.json();
+    cityData = await repsonse.json();
 
-  const cityName = document.querySelector("#city-name");
-  let cityCountryDisplay = `${cityData.location.name}, ${cityData.location.country}`;
-  cityName.textContent = cityCountryDisplay;
+    const cityName = document.querySelector("#city-name");
+    let cityCountryDisplay = `${cityData.location.name}, ${cityData.location.country}`;
+    cityName.textContent = cityCountryDisplay;
 
-  const timeDisplay = document.querySelector("#city-time");
-  const time = cityData.location.localtime;
-  const formatDate = format(new Date(time), "ccc MMM dd, yyyy | p");
+    const timeDisplay = document.querySelector("#city-time");
+    const time = cityData.location.localtime;
+    const formatDate = format(new Date(time), "ccc MMM dd, yyyy | p");
 
-  timeDisplay.textContent = formatDate;
+    timeDisplay.textContent = formatDate;
 
-  tempChangeBtn();
+    tempChangeBtn();
 
-  console.log(cityData);
-  temp = cityData.current.temp_f;
-  console.log(temp);
-  const maxTemp = cityData.forecast.forecastday[0].day.maxtemp_f;
-  console.log(maxTemp);
-  // } //catch {
-  //alert("Enter a valid city name.");
-  //}
+    console.log(cityData);
+    temp = cityData.current.temp_f;
+    console.log(temp);
+    const maxTemp = cityData.forecast.forecastday[0].day.maxtemp_f;
+    console.log(maxTemp);
+  } catch {
+    alert("Enter a valid city name.");
+  }
 }
 
 function tempChangeBtn() {
+  console.log(cityData);
   const tempF = `${cityData.current.temp_f}°F`;
   const tempC = `${cityData.current.temp_c}°C`;
 
@@ -185,16 +196,64 @@ function tempChangeBtn() {
         }
 
         timeStart++;
-        /*
-        if (timeStart >= 23) {
-          timeStart = 0;
-        } else {
-          timeStart++;
-        }
-        */
       }
 
-      //break;
+      const dayOneName = document.querySelector("#day1");
+      const dayTwoName = document.querySelector("#day2");
+
+      const dayOneIcon = document.querySelector("#icon1");
+      const dayTwoIcon = document.querySelector("#icon2");
+
+      const dayOneText = document.querySelector("#condition-text-day1");
+      const dayTwoText = document.querySelector("#condition-text-day2");
+
+      const dayOneLow = document.querySelector("#low-1");
+      const dayTwoLow = document.querySelector("#low-2");
+
+      const dayOneHigh = document.querySelector("#high-1");
+      const dayTwoHigh = document.querySelector("#high-2");
+
+      let dayDate = parseISO(cityData.forecast.forecastday[1].date);
+      console.log(dayDate);
+
+      //let fixedDate = dayDate.addDays(new Date(dayDate), 1);
+
+      const formatDayOne = format(new Date(dayDate), "ccc");
+      console.log(formatDayOne);
+
+      dayOneName.textContent = formatDayOne;
+      dayOneIcon.src = cityData.forecast.forecastday[1].day.condition.icon;
+      dayOneIcon.alt = cityData.forecast.forecastday[1].day.condition.text;
+      dayOneText.textContent =
+        cityData.forecast.forecastday[1].day.condition.text;
+
+      if (tempFer) {
+        dayOneLow.textContent = `${cityData.forecast.forecastday[1].day.mintemp_f}°F`;
+        dayOneHigh.textContent = `${cityData.forecast.forecastday[1].day.maxtemp_f}°F`;
+      } else {
+        dayOneLow.textContent = `${cityData.forecast.forecastday[1].day.mintemp_c}°C`;
+        dayOneHigh.textContent = `${cityData.forecast.forecastday[1].day.maxtemp_c}°C`;
+      }
+      let dayDate2 = parseISO(cityData.forecast.forecastday[2].date);
+
+      //let fixedDate2 = dayDate2.addDays(new Date(dayDate2), 1);
+
+      const formateDayTwo = format(new Date(dayDate2), "ccc");
+      console.log(formateDayTwo);
+
+      dayTwoName.textContent = formateDayTwo;
+      dayTwoIcon.src = cityData.forecast.forecastday[2].day.condition.icon;
+      dayTwoIcon.alt = cityData.forecast.forecastday[2].day.condition.text;
+      dayTwoText.textContent =
+        cityData.forecast.forecastday[2].day.condition.text;
+
+      if (tempFer) {
+        dayTwoLow.textContent = `${cityData.forecast.forecastday[2].day.mintemp_f}°F`;
+        dayTwoHigh.textContent = `${cityData.forecast.forecastday[2].day.maxtemp_f}°F`;
+      } else {
+        dayTwoLow.textContent = `${cityData.forecast.forecastday[2].day.mintemp_c}°C`;
+        dayTwoHigh.textContent = `${cityData.forecast.forecastday[2].day.maxtemp_c}°C`;
+      }
     }
   }
 }
